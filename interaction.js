@@ -14,6 +14,6 @@ module.exports.getAccount = () => {
 };
 
 module.exports.getContract = (contractAddress, abi, account) => {
-  const contract = new web3.eth.Contract(abi, contractAddress, { from: account.address });
+  const contract = new Ethers.Contract(contractAddress, abi, account);
   return contract;
 };
