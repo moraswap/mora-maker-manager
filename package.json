@@ -1,0 +1,26 @@
+{
+  "name": "mora-maker-manager",
+  "version": "1.0.0",
+  "description": "Manage MoraMaker smart contract",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "mora-maker-manager": "index.js"
+  },
+  "keywords": [
+    "ethereum",
+    "solana",
+    "neon",
+    "mora"
+  ],
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@ethersproject/bignumber": "5.4.0",
+    "bignumber.js": "^7.2.1",
+    "dotenv": "^16.0.3",
+    "ethers": "^5.7.2",
+    "web3": "^1.0.0-beta.55"
+  }
+}
