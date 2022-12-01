@@ -2,5 +2,6 @@
     "provider": "https://proxy.devnet.neonlabs.org/solana",
     "moraAddress": "0x6dcDD1620Ce77B595E6490701416f6Dbf20D2f67",
     "xmoraAddress": "0x549b5cb2D324F901aEd6938a3838fB9b10898441",
-    "makerAddress": "0xD3184C8aAc4dcB76Fc382077143d0c6b851F2253"
+    "makerAddress": "0xD3184C8aAc4dcB76Fc382077143d0c6b851F2253",
+    "makerv2Address": "0x54Ee92377a63C53A23703740de7eea09DFD6ee11"
 }
