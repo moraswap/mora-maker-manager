@@ -1,5 +1,7 @@
 {
-    "provider": "https://proxy.devnet.neonlabs.org/solana",
+    "provider": "https://devnet.neonevm.org",
+    "chainId": 245022926,
+    "factoryAddress": "0x696d73D7262223724d60B2ce9d6e20fc31DfC56B",
     "moraAddress": "0x6dcDD1620Ce77B595E6490701416f6Dbf20D2f67",
     "xmoraAddress": "0x549b5cb2D324F901aEd6938a3838fB9b10898441",
     "makerAddress": "0xD3184C8aAc4dcB76Fc382077143d0c6b851F2253",

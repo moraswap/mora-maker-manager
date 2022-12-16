@@ -13,6 +13,12 @@ const parameters = {
     },
     {
       type: "input",
+      name: "chainId",
+      message: "Enter the chain ID of web3 provider",
+      default: 1
+    },
+    {
+      type: "input",
       name: "moraAddress",
       message: "Contract address of Mora"
     },

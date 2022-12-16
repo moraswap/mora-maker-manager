@@ -6,68 +6,110 @@ const path = require("path");
 const { promisify } = require("util");
 
 const Config = require("../config");
+const TokenListAPI = require("../apis/tokenlist");
 const Interaction = require("../interaction");
+const Erc20ABI = require("../abis/erc20.json");
 const MakerV2ABI = require("../abis/makerv2.json");
+const FactoryABI = require("../abis/factory.json");
 const MoraABI = require("../abis/mora.json");
 const { BigNumber } = require("ethers");
 
 const writeFileAsync = promisify(fs.writeFile);
 const readFileAsync = promisify(fs.readFile);
 
+const _0 = BigNumber.from("0");
+const _10e18 = BigNumber.from((10**18).toString());
+const chainId = Config.getConfig().chainId;
+const factoryAddress = Config.getConfig().factoryAddress;
+const moraAddress = Config.getConfig().moraAddress;
+const xmoraAddress = Config.getConfig().xmoraAddress;
+const makerv2Address = Config.getConfig().makerv2Address;
+const eth = Interaction.getEth();
+
+var executedPair = [];
+var failedPair = [];
+
+async function convert(account, makerv2, pair, token0, token1) {
+    if (pair && pair !== "0x0000000000000000000000000000000000000000" && !executedPair.includes(pair) && !failedPair.includes(pair)) {
+        const pairName = token0.symbol + "-" + token1.symbol;
+        try {
+            const erc20 = Interaction.getContract(pair, Erc20ABI, account);
+            console.log("Checking balance of pair", pair);
+            const lpBalance = await erc20.balanceOf(makerv2.address);
+            console.log("Balance:", lpBalance);
+            if (lpBalance.lt(_0)) {
+                console.log("Start converting " + pairName + " (" + pair + ")");
+                // var nonce = await eth.getTransactionCount(account.address);
+                const tx = await makerv2.convert(token0.address, token1.address);
+                console.log("Successfully convert " + pairName, tx.hash);
+            }
+            executedPair.push(pair);
+            console.log("Completed executing pair", pair);
+            await new Promise(resolve => setTimeout(resolve, 2000));
+        }
+        catch (e) {
+            failedPair.push(pair);
+            console.log("Failed to convert " + pairName);
+            // console.log(e);
+            await new Promise(resolve => setTimeout(resolve, 2000));
+        }
+    }
+    else {
+        console.log("Pair has been executed or failed", pair);
+    }
+}
+
+function calculateApr(db, dt, bal) {
+    return ((db * 31536000 / dt)) / bal.div(_10e18).toNumber();
+}
+
 module.exports.start = async (account) => {
     try {
-        const _10e18 = BigNumber.from((10**18).toString());
         const aprFile = path.join(process.cwd(), "./results/apr.json");
         const contents = await readFileAsync(aprFile);
         const { timestamp, deltaBalance, apr } = JSON.parse(contents.toString());
 
-        const moraAddress = Config.getConfig().moraAddress;
-        const xmoraAddress = Config.getConfig().xmoraAddress;
+        const tokenlist = await TokenListAPI.get(chainId);
+        // console.log(tokenlist);
+        const factory = Interaction.getContract(factoryAddress, FactoryABI, account);
         const mora = Interaction.getContract(moraAddress, MoraABI, account);
-        const balance = await mora.balanceOf(xmoraAddress);
+        const initBalance = await mora.balanceOf(xmoraAddress);
 
-        const makerv2Address = Config.getConfig().makerv2Address;
         const makerv2 = Interaction.getContract(makerv2Address, MakerV2ABI, account);
 
-        const tx1 = await makerv2.convertMultiple(
-            [
-                "0x6dcDD1620Ce77B595E6490701416f6Dbf20D2f67", // MORA-NEON
-                "0x6Ab1F83c0429A1322D7ECDFdDf54CE6D179d911f" // mUSDC-NEON
-            ],
-            [
-                "0xf1041596da0499c3438e3B1Eb7b95354C6Aed1f5", // MORA-NEON
-                "0xf1041596da0499c3438e3B1Eb7b95354C6Aed1f5" // mUSDC-NEON
-            ]
-        );
-        const receipt1 = await tx1.wait();
-        if (receipt1 && receipt1.blockNumber && receipt1.status === 1) { // 0 - failed, 1 - success
-            console.log("Successfully convertMultiple ", tx1.hash);
-            const newTimestamp = new Date().getTime() / 1000;
-            console.log("newTimestamp", newTimestamp);
-            const deltaTimestamp = newTimestamp - timestamp;
-            console.log("deltaTimestamp", deltaTimestamp);
+        const newTimestamp = new Date().getTime() / 1000;
+        const deltaTimestamp = newTimestamp - timestamp;
+        console.log("deltaTimestamp", deltaTimestamp);
 
-            const newBalance = await mora.balanceOf(xmoraAddress);
-            console.log("balance", balance.div(_10e18).toNumber());
-            console.log("newBalance", newBalance.div(_10e18).toNumber());
-            const newDeltaBalance = newBalance.div(_10e18).toNumber() - balance.div(_10e18).toNumber();
-            console.log("deltaBalance", newDeltaBalance);
-            const newApr = ((newDeltaBalance * 31536000 / deltaTimestamp)) / balance.div(_10e18).toNumber();
-            console.log("newApr", newApr);
+        var newDeltaBalance = 0;
+        var newApr = apr;
 
-            await writeFileAsync(aprFile, JSON.stringify({
-                lastTimestamp: timestamp,
-                lastDeltaBalance: deltaBalance,
-                lastApr: apr,
-                timestamp: newTimestamp,
-                deltaBalance: newDeltaBalance,
-                apr: newApr,
-                boughtbackMora: 24335.29202159903 + newDeltaBalance
-            }));
-
-            //   await new Promise(resolve => setTimeout(resolve, 10000));
+        for (let i = 0; i < tokenlist.length; i++) {
+            for (let j = 0; j < tokenlist.length; j++) {
+                const token0 = tokenlist[i];
+                const token1 = tokenlist[j];
+                if (token0.address && token1.address && token0.address !== token1.address) {
+                    const pair = await factory.getPair(token0.address, token1.address);
+                    const balance = await mora.balanceOf(xmoraAddress);
+                    await convert(account, makerv2, pair, token0, token1);
+                    const newBalance = await mora.balanceOf(xmoraAddress);
+                    newDeltaBalance = newDeltaBalance + newBalance.div(_10e18).toNumber() - balance.div(_10e18).toNumber();
+                    console.log("deltaBalance", newDeltaBalance);
+                    newApr = calculateApr(newDeltaBalance, deltaTimestamp, initBalance);
+                    console.log("newApr", newApr);
+                }
+            }
         }
 
+        await writeFileAsync(aprFile, JSON.stringify({
+            lastTimestamp: timestamp,
+            lastApr: apr,
+            timestamp: newTimestamp,
+            apr: newApr,
+            boughtbackMora: newDeltaBalance
+        }));
+
+        console.log("Failed pairs: " + failedPair.toString());
     }
     catch (e) {
         console.log(e);
