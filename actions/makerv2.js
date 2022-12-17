@@ -67,7 +67,7 @@ module.exports.start = async (account) => {
     try {
         const aprFile = path.join(process.cwd(), "./results/apr.json");
         const contents = await readFileAsync(aprFile);
-        const { timestamp, deltaBalance, apr } = JSON.parse(contents.toString());
+        const { timestamp, deltaBalance, apr, boughtbackMora } = JSON.parse(contents.toString());
 
         const tokenlist = await TokenListAPI.get(chainId);
         // console.log(tokenlist);
@@ -106,7 +106,7 @@ module.exports.start = async (account) => {
             lastApr: apr,
             timestamp: newTimestamp,
             apr: newApr,
-            boughtbackMora: newDeltaBalance
+            boughtbackMora: boughtbackMora + newDeltaBalance
         }));
 
         console.log("Failed pairs: " + failedPair.toString());
