@@ -33,16 +33,16 @@ async function convert(account, makerv2, pair, token0, token1) {
     if (pair && pair !== "0x0000000000000000000000000000000000000000" && !executedPair.includes(pair) && !failedPair.includes(pair)) {
         const pairName = token0.symbol + "-" + token1.symbol;
         try {
-            // const erc20 = Interaction.getContract(pair, Erc20ABI, account);
-            // console.log("Checking balance of pair", pair);
-            // const lpBalance = await erc20.balanceOf(makerv2.address);
-            // console.log("Balance:", lpBalance);
-            // if (lpBalance.div(_10e18).toNumber() > 0) {
+            const erc20 = Interaction.getContract(pair, Erc20ABI, account);
+            console.log("Checking balance of pair", pair);
+            const lpBalance = await erc20.balanceOf(makerv2.address);
+            console.log("Balance:", lpBalance);
+            if (lpBalance.gt(_0)) {
                 console.log("Start converting " + pairName + " (" + pair + ")");
                 // var nonce = await eth.getTransactionCount(account.address);
                 const tx = await makerv2.convert(token0.address, token1.address);
                 console.log("Successfully convert " + pairName, tx.hash);
-            // }
+            }
             executedPair.push(pair);
             console.log("Completed executing pair", pair);
             await new Promise(resolve => setTimeout(resolve, 2000));
