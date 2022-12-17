@@ -3,14 +3,12 @@
 
 const Config = require("./config");
 const Interaction = require("./interaction");
-const Maker = require("./actions/maker");
 const MakerV2 = require("./actions/makerv2");
 
 const start = async () => {
   await Config.checkConfig();
   const account = Interaction.getAccount();
   
-  // await Maker.start(account);
   await MakerV2.start(account);
 };
 

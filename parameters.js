@@ -29,7 +29,7 @@ const parameters = {
     },
     {
       type: "input",
-      name: "makerAddress",
+      name: "makerv2Address",
       message: "Contract address of MoraMaker"
     }
   ]

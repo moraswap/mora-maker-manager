@@ -90,9 +90,9 @@ module.exports.start = async (account) => {
                 const token1 = tokenlist[j];
                 if (token0.address && token1.address && token0.address !== token1.address) {
                     const pair = await factory.getPair(token0.address, token1.address);
-                    const balance = await mora.balanceOf(xmoraAddress);
+                    const balance = await makerv2.boughtbackMora();
                     await convert(account, makerv2, pair, token0, token1);
-                    const newBalance = await mora.balanceOf(xmoraAddress);
+                    const newBalance = await makerv2.boughtbackMora();
                     newDeltaBalance = newDeltaBalance + newBalance.div(_10e18).toNumber() - balance.div(_10e18).toNumber();
                     console.log("deltaBalance", newDeltaBalance);
                     newApr = calculateApr(newDeltaBalance, deltaTimestamp, initBalance);
