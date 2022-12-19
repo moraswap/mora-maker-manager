@@ -108,7 +108,7 @@ module.exports.start = async (account) => {
             lastApr: apr,
             timestamp: newTimestamp,
             apr: newApr,
-            boughtbackMora: parseFloat(await makerv2.boughtMora().div(_10e18).toString())
+            boughtbackMora: parseFloat(await makerv2.boughtMora().toString()) / 10 ** 18
         }));
 
         console.log("Failed pairs: " + failedPair.toString());
