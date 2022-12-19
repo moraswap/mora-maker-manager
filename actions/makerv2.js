@@ -60,7 +60,7 @@ async function convert(account, makerv2, pair, token0, token1) {
 }
 
 function calculateApr(db, dt, bal) {
-    return ((db * 31536000 / dt)) / bal.div(_10e18).toNumber();
+    return ((db * 31536000 / dt)) / (parseFloat(bal.toString()) / 10 ** 18);
 }
 
 module.exports.start = async (account) => {
@@ -91,9 +91,11 @@ module.exports.start = async (account) => {
                 if (token0.address && token1.address && token0.address !== token1.address) {
                     const pair = await factory.getPair(token0.address, token1.address);
                     const balance = await makerv2.boughtMora();
+                    // console.log("Old bought amount:", parseFloat(balance.toString()))
                     await convert(account, makerv2, pair, token0, token1);
                     const newBalance = await makerv2.boughtMora();
-                    newDeltaBalance = newDeltaBalance + newBalance.div(_10e18).toNumber() - balance.div(_10e18).toNumber();
+                    // console.log("New bought amount:", parseFloat(newBalance.toString()))
+                    newDeltaBalance = newDeltaBalance + (parseFloat(newBalance.toString()) - parseFloat(balance.toString())) / 10 ** 18;
                     console.log("deltaBalance", newDeltaBalance);
                     newApr = calculateApr(newDeltaBalance, deltaTimestamp, initBalance);
                     console.log("newApr", newApr);
@@ -106,7 +108,7 @@ module.exports.start = async (account) => {
             lastApr: apr,
             timestamp: newTimestamp,
             apr: newApr,
-            boughtbackMora: boughtbackMora + newDeltaBalance
+            boughtbackMora: parseFloat(await makerv2.boughtMora().div(_10e18).toString())
         }));
 
         console.log("Failed pairs: " + failedPair.toString());
