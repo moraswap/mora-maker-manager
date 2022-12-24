@@ -90,12 +90,12 @@ module.exports.start = async (account) => {
                 const token1 = tokenlist[j];
                 if (token0.address && token1.address && token0.address !== token1.address) {
                     const pair = await factory.getPair(token0.address, token1.address);
-                    const balance = await makerv2.boughtMora();
+                    // const balance = await makerv2.boughtMora();
                     // console.log("Old bought amount:", parseFloat(balance.toString()))
                     await convert(account, makerv2, pair, token0, token1);
                     const newBalance = await makerv2.boughtMora();
                     // console.log("New bought amount:", parseFloat(newBalance.toString()))
-                    newDeltaBalance = newDeltaBalance + (parseFloat(newBalance.toString()) - parseFloat(balance.toString())) / 10 ** 18;
+                    newDeltaBalance = parseFloat(newBalance.toString()) / 10 ** 18 - boughtbackMora;
                     console.log("deltaBalance", newDeltaBalance);
                     newApr = calculateApr(newDeltaBalance, deltaTimestamp, initBalance);
                     console.log("newApr", newApr);
