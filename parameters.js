@@ -24,8 +24,13 @@ const parameters = {
     },
     {
       type: "input",
-      name: "xmoraAddress",
-      message: "Contract address of xMora"
+      name: "rewardAddress",
+      message: "Contract address of reward token"
+    },
+    {
+      type: "input",
+      name: "smoraAddress",
+      message: "Contract address of sMora"
     },
     {
       type: "input",

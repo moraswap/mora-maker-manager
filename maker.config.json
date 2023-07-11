@@ -3,6 +3,7 @@
     "chainId": 245022926,
     "factoryAddress": "0x696d73D7262223724d60B2ce9d6e20fc31DfC56B",
     "moraAddress": "0x6dcDD1620Ce77B595E6490701416f6Dbf20D2f67",
-    "xmoraAddress": "0x549b5cb2D324F901aEd6938a3838fB9b10898441",
-    "makerv2Address": "0x54Ee92377a63C53A23703740de7eea09DFD6ee11"
+    "rewardAddress": "0xB8fC542Cfe60aAc349646a7e266DfCd6E02DB90d",
+    "smoraAddress": "0x48b680Db5C17b003FFDFe6a207bF1AB1Bb15eE9b",
+    "makerv2Address": "0x47e0641aB9679602b3b0f0c6602de36A9da19b3f"
 }

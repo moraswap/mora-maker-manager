@@ -7,22 +7,26 @@ const { promisify } = require("util");
 
 const Config = require("../config");
 const TokenListAPI = require("../apis/tokenlist");
+const PriceAPI = require("../apis/price");
 const Interaction = require("../interaction");
 const Erc20ABI = require("../abis/erc20.json");
 const MakerV2ABI = require("../abis/makerv2.json");
 const FactoryABI = require("../abis/factory.json");
 const MoraABI = require("../abis/mora.json");
+const sMoraABI = require("../abis/smora.json");
 const { BigNumber } = require("ethers");
 
 const writeFileAsync = promisify(fs.writeFile);
 const readFileAsync = promisify(fs.readFile);
 
 const _0 = BigNumber.from("0");
+const _10e9 = BigNumber.from((10**9).toString());
 const _10e18 = BigNumber.from((10**18).toString());
 const chainId = Config.getConfig().chainId;
 const factoryAddress = Config.getConfig().factoryAddress;
 const moraAddress = Config.getConfig().moraAddress;
-const xmoraAddress = Config.getConfig().xmoraAddress;
+const rewardAddress = Config.getConfig().rewardAddress;
+const smoraAddress = Config.getConfig().smoraAddress;
 const makerv2Address = Config.getConfig().makerv2Address;
 const eth = Interaction.getEth();
 
@@ -40,18 +44,19 @@ async function convert(account, makerv2, pair, token0, token1) {
             if (lpBalance.gt(_0)) {
                 console.log("Start converting " + pairName + " (" + pair + ")");
                 // var nonce = await eth.getTransactionCount(account.address);
-                const tx = await makerv2.convert(token0.address, token1.address);
+                const tx = await makerv2.convert(token0.address, token1.address, "300");
+                await tx.wait();
                 console.log("Successfully convert " + pairName, tx.hash);
             }
             executedPair.push(pair);
             console.log("Completed executing pair", pair);
-            await new Promise(resolve => setTimeout(resolve, 2000));
+            // await new Promise(resolve => setTimeout(resolve, 2000));
         }
         catch (e) {
             failedPair.push(pair);
             console.log("Failed to convert " + pairName);
-            // console.log(e);
-            await new Promise(resolve => setTimeout(resolve, 2000));
+            console.log(e);
+            // await new Promise(resolve => setTimeout(resolve, 2000));
         }
     }
     else {
@@ -59,22 +64,26 @@ async function convert(account, makerv2, pair, token0, token1) {
     }
 }
 
-function calculateApr(db, dt, bal) {
-    return ((db * 31536000 / dt)) / (parseFloat(bal.toString()) / 10 ** 18);
+function calculateAnnualValueUsd(db, dt, p) {
+    return db * p * (365 * 24 * 60 * 60) / dt;
 }
 
 module.exports.start = async (account) => {
     try {
-        const aprFile = path.join(process.cwd(), "./results/apr.json");
-        const contents = await readFileAsync(aprFile);
-        const { timestamp, deltaBalance, apr, boughtbackMora } = JSON.parse(contents.toString());
+        const infoFile = path.join(process.cwd(), "./results/info.json");
+        const contents = await readFileAsync(infoFile);
+        const { timestamp, deltaBalance, annualValueUsd, boughtbackToken } = JSON.parse(contents.toString());
 
         const tokenlist = await TokenListAPI.get(chainId);
         // console.log(tokenlist);
+        const rewardPrice = await PriceAPI.get("solana");
+        // const moraPrice = 0.03217;
         const factory = Interaction.getContract(factoryAddress, FactoryABI, account);
-        const mora = Interaction.getContract(moraAddress, MoraABI, account);
-        const initBalance = await mora.balanceOf(xmoraAddress);
+        // const mora = Interaction.getContract(moraAddress, MoraABI, account);
+        const rewardToken = Interaction.getContract(rewardAddress, Erc20ABI, account);
+        const initBalance = await rewardToken.balanceOf(smoraAddress);
 
+        const smora = Interaction.getContract(smoraAddress, sMoraABI, account);
         const makerv2 = Interaction.getContract(makerv2Address, MakerV2ABI, account);
 
         const newTimestamp = new Date().getTime() / 1000;
@@ -82,7 +91,7 @@ module.exports.start = async (account) => {
         console.log("deltaTimestamp", deltaTimestamp);
 
         var newDeltaBalance = 0;
-        var newApr = apr;
+        var newAnnualValueUsd = annualValueUsd;
 
         for (let i = 0; i < tokenlist.length; i++) {
             for (let j = 0; j < tokenlist.length; j++) {
@@ -93,22 +102,25 @@ module.exports.start = async (account) => {
                     // const balance = await makerv2.boughtMora();
                     // console.log("Old bought amount:", parseFloat(balance.toString()))
                     await convert(account, makerv2, pair, token0, token1);
-                    const newBalance = await makerv2.boughtMora();
+                    const newBalance = await rewardToken.balanceOf(smoraAddress);
                     // console.log("New bought amount:", parseFloat(newBalance.toString()))
-                    newDeltaBalance = parseFloat(newBalance.toString()) / 10 ** 18 - boughtbackMora;
+                    newDeltaBalance = (parseFloat(newBalance.toString()) - parseFloat(initBalance.toString())) / 10 ** 9;
                     console.log("deltaBalance", newDeltaBalance);
-                    newApr = calculateApr(newDeltaBalance, deltaTimestamp, initBalance);
-                    console.log("newApr", newApr);
+                    newAnnualValueUsd = calculateAnnualValueUsd(newDeltaBalance, deltaTimestamp, rewardPrice);
+                    console.log("newAnnualValueUsd", newAnnualValueUsd);
                 }
             }
         }
 
-        await writeFileAsync(aprFile, JSON.stringify({
+        const tx = await smora.updateReward(rewardAddress);
+        await tx.wait();
+
+        await writeFileAsync(infoFile, JSON.stringify({
             lastTimestamp: timestamp,
-            lastApr: apr,
+            lastAnnualValueUsd: annualValueUsd,
             timestamp: newTimestamp,
-            apr: newApr,
-            boughtbackMora: parseFloat((await makerv2.boughtMora()).toString()) / 10 ** 18
+            annualValueUsd: newAnnualValueUsd,
+            boughtbackToken: parseFloat((await makerv2.boughtTokenTo()).toString()) / 10 ** 9
         }));
 
         console.log("Failed pairs: " + failedPair.toString());

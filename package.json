@@ -18,7 +18,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@ethersproject/bignumber": "5.4.0",
-    "axios": "^1.2.0",
+    "axios": "^1.4.0",
     "bignumber.js": "^7.2.1",
     "dotenv": "^16.0.3",
     "ethers": "^5.7.2",
