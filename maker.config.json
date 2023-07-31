@@ -1,9 +1,9 @@
 {
-    "provider": "https://devnet.neonevm.org",
-    "chainId": 245022926,
-    "factoryAddress": "0x696d73D7262223724d60B2ce9d6e20fc31DfC56B",
-    "moraAddress": "0x6dcDD1620Ce77B595E6490701416f6Dbf20D2f67",
-    "rewardAddress": "0xB8fC542Cfe60aAc349646a7e266DfCd6E02DB90d",
-    "smoraAddress": "0x48b680Db5C17b003FFDFe6a207bF1AB1Bb15eE9b",
-    "makerv2Address": "0x47e0641aB9679602b3b0f0c6602de36A9da19b3f"
+    "provider": "https://neon-proxy-mainnet.solana.p2p.org",
+    "chainId": 245022934,
+    "factoryAddress": "0xd43F135f6667174f695ecB7DD2B5f953d161e4d1",
+    "moraAddress": "0x2043191e10a2A4b4601F5123D6C94E000b5d915F",
+    "rewardAddress": "0x5f38248f339Bf4e84A2caf4e4c0552862dC9F82a",
+    "smoraAddress": "0xa3da566fdE97c90c08052f612BdBed8F3B8004B7",
+    "makerv2Address": "0xB623Bd0956738B8FAD1D80eaF374F5dc84Dd4939"
 }
