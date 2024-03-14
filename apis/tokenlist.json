@@ -1,0 +1,27 @@
+[
+    {
+        "address": "0x2043191e10a2A4b4601F5123D6C94E000b5d915F",
+        "symbol": "MORA",
+        "chainId": 245022934
+    },
+    {
+        "address": "0x202c35e517fa803b537565c40f0a6965d7204609",
+        "symbol": "NEON",
+        "chainId": 245022934
+    },
+    {
+        "address": "0x5f38248f339Bf4e84A2caf4e4c0552862dC9F82a",
+        "symbol": "wSOL",
+        "chainId": 245022934
+    },
+    {
+        "address": "0xea6b04272f9f62f997f666f07d3a974134f7ffb9",
+        "symbol": "USDC",
+        "chainId": 245022934
+    },
+    {
+        "address": "0x5f0155d08ef4aae2b500aefb64a3419da8bb611a",
+        "symbol": "USDT",
+        "chainId": 245022934
+    }
+]

@@ -1,10 +1,6 @@
 #!/usr/bin/env node
 "use strict";
 
-const fs = require("fs");
-const path = require("path");
-const { promisify } = require("util");
-
 const Config = require("../config");
 const PairListAPI = require("../apis/pairlist");
 const Interaction = require("../interaction");
@@ -12,9 +8,6 @@ const Erc20ABI = require("../abis/erc20.json");
 const MakerV2ABI = require("../abis/makerv2.json");
 const sMoraABI = require("../abis/smora.json");
 const { BigNumber } = require("ethers");
-
-const writeFileAsync = promisify(fs.writeFile);
-const readFileAsync = promisify(fs.readFile);
 
 const _0 = BigNumber.from("0");
 const chainId = Config.getConfig().chainId;
@@ -29,34 +22,27 @@ function timeout(ms) {
 async function convertMultiple(makerv2, batch) {
     console.log("Start converting batch", batch.pairs);
     const tx = batch.token0s.length > 1
-                    ? await makerv2.convertMultiple(batch.token0s, batch.token1s, "1000")
-                    : await makerv2.convert(batch.token0s[0], batch.token1s[0], "1000");
+                    ? await makerv2.convertMultiple(batch.token0s, batch.token1s, "3000")
+                    : await makerv2.convert(batch.token0s[0], batch.token1s[0], "3000");
     console.log("Waiting for confirmations", tx.hash);
     await tx.wait();
-    await timeout(1000);
+    // await timeout(1000);
     console.log("Successfully convert batch", tx.hash);
 }
 
 module.exports.start = async (account) => {
     try {
-        const infoFile = path.join(process.cwd(), "./results/info.json");
-        const contents = await readFileAsync(infoFile);
-        const { timestamp } = JSON.parse(contents.toString());
-
+        console.log("Start converting protocol fee V2");
         const pairlist = await PairListAPI.get(chainId);
 
         const smora = Interaction.getContract(smoraAddress, sMoraABI, account);
         const makerv2 = Interaction.getContract(makerv2Address, MakerV2ABI, account);
 
-        const newTimestamp = new Date().getTime() / 1000;
-        const deltaTimestamp = newTimestamp - timestamp;
-        console.log("deltaTimestamp", deltaTimestamp);
-
         let batches = []
         let pairs = []
         let token0s = []
         let token1s = []
-        let maxBatchItem = 3
+        let maxBatchItem = 2
         for (let i = 0; i < pairlist.length; i++) {
             const pair = pairlist[i];
             if (pair.address) {
@@ -92,11 +78,6 @@ module.exports.start = async (account) => {
         const tx = await smora.updateReward(rewardAddress);
         console.log("Waiting for confirmations", tx.hash);
         await tx.wait();
-
-        await writeFileAsync(infoFile, JSON.stringify({
-            lastTimestamp: timestamp,
-            timestamp: newTimestamp,
-        }));
     }
     catch (e) {
         console.log(e);

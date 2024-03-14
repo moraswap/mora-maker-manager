@@ -12,6 +12,42 @@
         "chainId": 245022934
     },
     {
+        "address": "0x3bCbF1bb2fb70C3AF521f5FF6d3c6dE0BE6Eb293",
+        "token0": {
+            "address": "0x5f0155d08eF4aaE2B500AefB64A3419dA8bB611a",
+            "symbol": "USDT"
+        },
+        "token1": {
+            "address": "0xEA6B04272f9f62F997F666F07D3a974134f7FFb9",
+            "symbol": "USDC"
+        },
+        "chainId": 245022934
+    },
+    {
+        "address": "0x92207F1B9187F26623B030ba5e9e324254bC40B6",
+        "token0": {
+            "address": "0x2043191e10a2A4b4601F5123D6C94E000b5d915F",
+            "symbol": "MORA"
+        },
+        "token1": {
+            "address": "0xEA6B04272f9f62F997F666F07D3a974134f7FFb9",
+            "symbol": "USDC"
+        },
+        "chainId": 245022934
+    },
+    {
+        "address": "0x33c7Dc148b955a30CA597440c420C2e386486170",
+        "token0": {
+            "address": "0x5f38248f339Bf4e84A2caf4e4c0552862dC9F82a",
+            "symbol": "wSOL"
+        },
+        "token1": {
+            "address": "0x0575dD4AFD93B7522fEE4e0179f243ecA3856137",
+            "symbol": "PYTH"
+        },
+        "chainId": 245022934
+    },
+    {
         "address": "0x7Ef19bBc00363A166e93681774D5bdF75BF381C4",
         "token0": {
             "address": "0x5f38248f339Bf4e84A2caf4e4c0552862dC9F82a",
@@ -28,18 +64,6 @@
         "token0": {
             "address": "0x5f38248f339Bf4e84A2caf4e4c0552862dC9F82a",
             "symbol": "wSOL"
-        },
-        "token1": {
-            "address": "0xEA6B04272f9f62F997F666F07D3a974134f7FFb9",
-            "symbol": "USDC"
-        },
-        "chainId": 245022934
-    },
-    {
-        "address": "0x3bCbF1bb2fb70C3AF521f5FF6d3c6dE0BE6Eb293",
-        "token0": {
-            "address": "0x5f0155d08eF4aaE2B500AefB64A3419dA8bB611a",
-            "symbol": "USDT"
         },
         "token1": {
             "address": "0xEA6B04272f9f62F997F666F07D3a974134f7FFb9",
@@ -96,42 +120,6 @@
         "chainId": 245022934
     },
     {
-        "address": "0x92207F1B9187F26623B030ba5e9e324254bC40B6",
-        "token0": {
-            "address": "0x2043191e10a2A4b4601F5123D6C94E000b5d915F",
-            "symbol": "MORA"
-        },
-        "token1": {
-            "address": "0xEA6B04272f9f62F997F666F07D3a974134f7FFb9",
-            "symbol": "USDC"
-        },
-        "chainId": 245022934
-    },
-    {
-        "address": "0x785BADC1d6FF821386f718D768502e2Cd9C8bb93",
-        "token0": {
-            "address": "0x5f38248f339Bf4e84A2caf4e4c0552862dC9F82a",
-            "symbol": "wSOL"
-        },
-        "token1": {
-            "address": "0x6EFFb385713f22df4846d8156451a5efEC22a4c8",
-            "symbol": "mSOL"
-        },
-        "chainId": 245022934
-    },
-    {
-        "address": "0x33c7Dc148b955a30CA597440c420C2e386486170",
-        "token0": {
-            "address": "0x5f38248f339Bf4e84A2caf4e4c0552862dC9F82a",
-            "symbol": "wSOL"
-        },
-        "token1": {
-            "address": "0x0575dD4AFD93B7522fEE4e0179f243ecA3856137",
-            "symbol": "PYTH"
-        },
-        "chainId": 245022934
-    },
-    {
         "address": "0xb039C6D81006779e989a56597715499dFA98e48f",
         "token0": {
             "address": "0x5f38248f339Bf4e84A2caf4e4c0552862dC9F82a",
@@ -168,18 +156,6 @@
         "chainId": 245022934
     },
     {
-        "address": "0x710692844a84230ea474e94c211d1d6775d2147a",
-        "token0": {
-            "address": "0x3f16bf1931674af4d28d7ab37ef639a18c4ae99e",
-            "symbol": "nDOGE"
-        },
-        "token1": {
-            "address": "0x202c35e517fa803b537565c40f0a6965d7204609",
-            "symbol": "NEON"
-        },
-        "chainId": 245022934
-    },
-    {
         "address": "0x5008cb86d50a71192efff2b2888c836689ceaabc",
         "token0": {
             "address": "0xf335ae40f387bdc60477f0b306326a233d35227f",
@@ -192,26 +168,14 @@
         "chainId": 245022934
     },
     {
-        "address": "0x68eab87e00c2ea79e5ba382532192d6c5c704167",
+        "address": "0x94001c02ae0718a34915980f61363ad50138c40b",
         "token0": {
-            "address": "0x0037bb327ce36ed0d61c3c88a5b0e36b1d6b91cb",
-            "symbol": "ELON"
+            "address": "0xf335ae40f387bdc60477f0b306326a233d35227f",
+            "symbol": "CHONK"
         },
         "token1": {
-            "address": "0x202c35e517fa803b537565c40f0a6965d7204609",
-            "symbol": "NEON"
-        },
-        "chainId": 245022934
-    },
-    {
-        "address": "0x41032bb9d91f7ae06d5805046680aa65590d79e6",
-        "token0": {
-            "address": "0xae9c742807da5ec06a634319cc018ae5c3c18187",
-            "symbol": "CHARLIE"
-        },
-        "token1": {
-            "address": "0x202c35e517fa803b537565c40f0a6965d7204609",
-            "symbol": "NEON"
+            "address": "0x5f38248f339bf4e84a2caf4e4c0552862dc9f82a",
+            "symbol": "SOL"
         },
         "chainId": 245022934
     },

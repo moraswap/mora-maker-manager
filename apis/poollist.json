@@ -1,0 +1,93 @@
+[
+    {
+        "address": "0xa35ad4ccbc24791e2ed0d078c94a098d001d62e0",
+        "token0": {
+            "address": "0x2043191e10a2A4b4601F5123D6C94E000b5d915F",
+            "symbol": "MORA"
+        },
+        "token1": {
+            "address": "0x202c35e517fa803b537565c40f0a6965d7204609",
+            "symbol": "NEON"
+        },
+        "feeTier": 0.003,
+        "chainId": 245022934
+    },
+    {
+        "address": "0x341a8161c2341192fbd3dc4e29e8cdff426dc2ce",
+        "token0": {
+            "address": "0x2043191e10a2A4b4601F5123D6C94E000b5d915F",
+            "symbol": "MORA"
+        },
+        "token1": {
+            "address": "0x5f38248f339Bf4e84A2caf4e4c0552862dC9F82a",
+            "symbol": "wSOL"
+        },
+        "feeTier": 0.003,
+        "chainId": 245022934
+    },
+    {
+        "address": "0xe217a71e909c8f2dfa3b1cd03beae41e741fc087",
+        "token0": {
+            "address": "0x202c35e517fa803b537565c40f0a6965d7204609",
+            "symbol": "NEON"
+        },
+        "token1": {
+            "address": "0x5f38248f339Bf4e84A2caf4e4c0552862dC9F82a",
+            "symbol": "wSOL"
+        },
+        "feeTier": 0.003,
+        "chainId": 245022934
+    },
+    {
+        "address": "0xe217a71e909c8f2dfa3b1cd03beae41e741fc087",
+        "token0": {
+            "address": "0x202c35e517fa803b537565c40f0a6965d7204609",
+            "symbol": "NEON"
+        },
+        "token1": {
+            "address": "0x5f38248f339Bf4e84A2caf4e4c0552862dC9F82a",
+            "symbol": "wSOL"
+        },
+        "feeTier": 0.003,
+        "chainId": 245022934
+    },
+    {
+        "address": "0x407fe443946a3ffad4f168b957366c17be9a5a91",
+        "token0": {
+            "address": "0x202c35e517fa803b537565c40f0a6965d7204609",
+            "symbol": "NEON"
+        },
+        "token1": {
+            "address": "0xea6b04272f9f62f997f666f07d3a974134f7ffb9",
+            "symbol": "USDC"
+        },
+        "feeTier": 0.003,
+        "chainId": 245022934
+    },
+    {
+        "address": "0x7af31ab5a73e1b0123187e6da068f192eb981cf9",
+        "token0": {
+            "address": "0x5f38248f339Bf4e84A2caf4e4c0552862dC9F82a",
+            "symbol": "wSOL"
+        },
+        "token1": {
+            "address": "0xea6b04272f9f62f997f666f07d3a974134f7ffb9",
+            "symbol": "USDC"
+        },
+        "feeTier": 0.0005,
+        "chainId": 245022934
+    },
+    {
+        "address": "0x65aae08d200cd0efaf1d0b836330bd76745aefe6",
+        "token0": {
+            "address": "0x5f0155d08ef4aae2b500aefb64a3419da8bb611a",
+            "symbol": "USDT"
+        },
+        "token1": {
+            "address": "0xea6b04272f9f62f997f666f07d3a974134f7ffb9",
+            "symbol": "USDC"
+        },
+        "feeTier": 0.0001,
+        "chainId": 245022934
+    }
+]

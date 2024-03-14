@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 "use strict";
 
-const fullList = require("./tokenlist.json");
+const fullList = require("./poollist.json");
 
 module.exports.get = async (chainId) => {
     try {
